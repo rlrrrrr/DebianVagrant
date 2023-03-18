@@ -1,0 +1,19 @@
+- name: Deploiement application de Test node
+  hosts: virtualMachines
+  become: true
+  tasks:
+    - name: Installation de Docker
+      ansible.builtin.apt:
+        name: docker.io
+        state: present
+    - name: Demarrage de docker
+      service:
+        name: docker
+        state: started
+    - name: Lancement du conteneur
+      docker_container:
+        name: node_application
+        image: rlrrr/app_de_test
+        published_ports: 5000:5000
+        state: started
+    
