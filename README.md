@@ -9,3 +9,6 @@ Voir Vagrantfile
 
 ## Deploiement de l'application sur la virtual machine avec ansible 
 Voir playbook-ansible.yaml
+
+## Repository de l'application 
+https://github.com/RIYADLARBAOUI/simpleNodeApplication
