@@ -12,7 +12,11 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "debian/jessie64"
+  config.vm.box = "debian/buster64"
+  config.ssh.insert_key = false
+
+  config.ssh.forward_agent = true
+
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -29,11 +33,13 @@ Vagrant.configure("2") do |config|
   # within the machine from a port on the host machine and only allow access
   # via 127.0.0.1 to disable public access
   # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+  config.vm.network "forwarded_port", guest: 5000 , host: 5000 
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
   # config.vm.network "private_network", ip: "192.168.33.10"
   config.vm.network "private_network", ip: "192.168.56.10"
+
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -67,7 +73,11 @@ Vagrant.configure("2") do |config|
   # installation of python because ansible need it
    config.vm.provision "shell", inline: <<-SHELL
      apt-get update
+     apt-get install -y openssh-server
+     sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+     service ssh restart
      apt-get install -y python3
+     echo "${PUB_KEY}" >> /home/vagrant/.ssh/authorized_keys
    SHELL
 
 end

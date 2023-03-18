@@ -1,0 +1,9 @@
+
+all:
+  hosts:
+    virtualMachine:
+      ansible_host: 192.168.56.10
+  children:
+    virtualMachines:
+      hosts:
+        virtualMachine:
